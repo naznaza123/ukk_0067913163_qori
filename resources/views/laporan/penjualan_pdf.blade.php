@@ -5,42 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Penjualan</title>
     <style>
-        /* Tambahkan gaya CSS sesuai kebutuhan Anda */
-        body {
+       body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .logo {
-            float: left;
-            margin-right: 20px; /* Sesuaikan jarak logo dengan judul */
-        }
+        /* Gaya CSS untuk tabel */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
-        table, th, td {
+        th, td {
             border: 1px solid #ddd;
             padding: 8px;
+            text-align: left;
         }
         th {
             background-color: #f2f2f2;
         }
-        .total {
+        th:nth-child(4),
+        td:nth-child(4) {
+            text-align: right; /* Mengatur teks di kolom total harga ke kanan */
+        }
+        tfoot td {
             font-weight: bold;
         }
+        /* Gaya CSS untuk judul laporan dan periode */
+        h2, p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
     </style>
 </head>
 <body>
-    <!-- Logo toko -->
-    {{-- <div class="logo">
-        <img src="{{ public_path('postifylogo/logo3.png') }}" alt="Logo Toko" width="100">
-    </div> --}}
-
     <!-- Judul laporan -->
     <h2>Laporan Penjualan</h2>
+    <p>
+        <i>
+            POStify
+        </i>
+    </p>
     <p>Periode: {{ $start_date }} - {{ $end_date }}</p>
-    
+
     <!-- Tabel laporan -->
-    <table>
+    <table border="1">
         <thead>
             <tr>
                 <th>No. Transaksi</th>
@@ -51,9 +65,9 @@
         </thead>
         <tbody>
             @php
-                $totalHargaSeluruh = 0;
+                $totalHargaSeluruh = 0; // Variabel untuk mengakumulasi total harga seluruh transaksi
             @endphp
-            @foreach($transaksis as $transaksi)
+            {{-- @foreach($transaksis as $transaksi)
             <tr>
                 <td>{{ $transaksi->id }}</td>
                 <td>{{ $transaksi->tanggal_jual }}</td>
@@ -62,7 +76,7 @@
                     @if($transaksi->detailTransaksis->count() > 0)
                         @php
                             $totalHargaTransaksi = $transaksi->detailTransaksis->sum('harga');
-                            $totalHargaSeluruh += $totalHargaTransaksi;
+                            $totalSeluruh += $totalHargaTransaksi; // Menambahkan total harga transaksi ke total seluruh
                         @endphp
                         {{ formatRupiah($totalHargaTransaksi, true) }}
                     @else
@@ -70,7 +84,30 @@
                     @endif
                 </td>
             </tr>
-            @endforeach
+            @endforeach --}}
+            @foreach($transaksis as $transaksi)
+            @php
+                $totalHargaTransaksi = 0; // Inisialisasi total harga transaksi
+                foreach ($transaksi->detailTransaksis as $detail) {
+                    $totalHargaTransaksi += $detail->harga * $detail->jumlah; // Menghitung total harga transaksi
+                }
+                $totalHargaSeluruh += $totalHargaTransaksi; // Menambahkan total harga transaksi ke total harga seluruh
+            @endphp
             <tr>
-                <td colspan="3" class="total"><strong>Total Harga Seluruh</strong></td>
-                <td class=
+                <td>{{ $transaksi->id }}</td>
+                <td>{{ $transaksi->tanggal_jual }}</td>
+                <td>{{ $transaksi->metode_pembayaran }}</td>
+                <td>{{ formatRupiah($totalHargaTransaksi, true) }}</td>
+            </tr>
+            @endforeach
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total Harga Seluruh</strong></td>
+                <td><strong>{{ formatRupiah($totalHargaSeluruh, true) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

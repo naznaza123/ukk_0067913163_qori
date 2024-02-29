@@ -121,17 +121,23 @@
                     <th>Total:</th>
                     <td>{{ formatRupiah($totalharga,true) }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <th>Diskon:</th>
                     <td>{{ formatRupiah($inputdiskon,true) }}</td>
                 </tr>
                 <tr>
                     <th>Total Setelah Diskon:</th>
                     <td>{{ formatRupiah($totalsetdiskon,true) }}</td>
-                </tr>
+                </tr> --}}
             </table>
         </div>
-        <a href="#" class="btn-print" onclick="window.print()">Print Invoice</a>
+        <form action="{{ route('invoice.cetak') }}" method="get">
+            <input type="hidden" name="transaksi_id" value="{{ $transaksi->id }}">
+            <input type="hidden" name="id_pelanggan" value="{{ $pel->id }}">
+            <input type="hidden" name="totalharga" value="{{ $totalharga }}">
+            <button type="submit" class="btn btn-primary">Cetak Invoice PDF</button>
+        </form>
+        {{-- <a href="#" class="btn-print" onclick="window.print()">Print Invoice</a> --}}
     </div>
 </body>
 </html>

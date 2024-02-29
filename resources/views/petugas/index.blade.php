@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+@include('sweetalert::alert')
     <div class="container mt-5 p-5">
         <section>
             <div class="row">

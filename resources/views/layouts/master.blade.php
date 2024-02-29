@@ -48,7 +48,7 @@
       <div class="sidenav-header mb-5">
           <i class="fas fa-times m-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
           <a class="navbar-brand" href="https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html" target="_blank">
-              <img src="{{ asset('postifylogo/logo3.png') }}" width="" class="navbar-brand-img" alt="main_logo">
+              <img src="{{ asset('postifylogo/favicon1.png') }}" width="" class="navbar-brand-img" alt="main_logo">
           </a>
       </div>
       <hr class="horizontal dark mt-0">
@@ -121,7 +121,7 @@
   <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
     <!-- Navbar -->
 <!-- Navbar -->
-    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+    <nav class="navbar  navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
         <!-- Group Dropdown and Search -->
         <div class="d-flex align-items-center">
@@ -151,7 +151,11 @@
           <ul class="navbar-nav justify-content-end">
             <!-- Add your navigation links here -->
             <li class="nav-item">
-              <a class="nav-link" href="/cart">Go to Cart</a>
+               
+              <a class="nav-link" href="/cart">
+                <i class="ni ni-cart"></i>
+                Go to Cart
+              </a>
             </li>
           </ul>
         </div>

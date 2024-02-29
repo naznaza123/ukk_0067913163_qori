@@ -70,6 +70,7 @@
         </div>
         <form action="/checkout" method="post">
             @csrf
+            <input type="hidden" value="{{ $total }}" name="hartot">
             <div class="form-group">
                 <div class="input-group mt-4 mb-4">
                     <select class="form-select"  name="metode_pembayaran" id="">
@@ -97,14 +98,14 @@
             </div>
             
 
-            <input class="form-control" type="number" name="diskon" id="diskon" placeholder="Diskon FInal" onchange="hitungTotalSetelahDiskon()">
+            {{-- <input class="form-control" type="number" name="diskon" id="diskon" placeholder="Diskon FInal" onchange="hitungTotalSetelahDiskon()">
             <input type="hidden" name="total_setelah_diskon" id="total_setelah_diskon">
             <div class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 <p>Total Setelah Diskon: <span  id="totalSetelahDiskon"></span></p>
-            </div>
+            </div> --}}
 
             
-            <script>
+            {{-- <script>
                 function formatRupiah(angka, prefix){
                     var number_string = angka.toString().replace(/[^,\d]/g, ''),
                     split    = number_string.split(','),
@@ -130,7 +131,7 @@
                     document.getElementById('total_setelah_diskon').value = totalSetelahDiskon;
                     document.getElementById('totalSetelahDiskon').innerText = formatRupiah(totalSetelahDiskon, true);
                 }
-                </script>
+                </script> --}}
                 
                 <div class="d-grid mt-3">
                     <button class="btn btn-primary " type="submit">Checkout</button>

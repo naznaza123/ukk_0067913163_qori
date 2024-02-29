@@ -45,7 +45,7 @@ Route::middleware('hakadmin')->group(function(){
     Route::post('/kategori/update/{id_kategori_produk}',[KategoriController::class,'update']);
 });
 
-Route::get('/invoice/cetak_pdf',[PenjualanController::class,'cetak_pdf']);
+Route::get('/invoice/cetak',[PenjualanController::class,'cetak_pdf'])->name('invoice.cetak');
 
 Route::get('/petugas',[PetugasController::class,'index']);
 
@@ -65,7 +65,7 @@ Route::post('/diskon/create',[DiskonController::class,'create']);
 
 Route::get('/cart',[PenjualanController::class,'cart']);
 Route::delete('/cart/{id_produk}',[PenjualanController::class,'removeFromCart'])->name('removeFromCart');
-Route::get('/addToCart/{id}',[PenjualanController::class,'addToCart']);
+Route::post('/addToCart/{id}',[PenjualanController::class,'addToCart']);
 Route::post('/checkout',[PenjualanController::class,'checkout']);
 Route::get('/pemesanan',[PenjualanController::class,'pemesanan']);
 Route::get('/diskon/add/{id}',[PenjualanController::class,'adddiskon']);

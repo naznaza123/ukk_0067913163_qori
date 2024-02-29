@@ -137,6 +137,59 @@ class PenjualanController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang!');
     }
 
+    // public function addToCart(Request $request, $id_produk) {
+    //     $product = Produk::find($id_produk);
+    
+    //     if(!$product) {
+    //         abort(404); // Handle jika produk tidak ditemukan
+    //     }
+    
+    //     $cart = session()->get('cart');
+    
+    //     // Jika keranjang kosong, inisialisasi dengan array kosong
+    //     if(!$cart) {
+    //         $cart = [
+    //             $id_produk => [
+    //                 'nama_produk' => $product->nama_produk,
+    //                 'harga' => $product->diskon,
+    //                 'quantity' => 1,
+    //                 'gambar_produk' => $product->gambar_produk
+    //             ]
+    //         ];
+    
+    //         session()->put('cart', $cart);
+    //         Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+    //         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+    //     }
+    
+    //     // Jika produk sudah ada di keranjang, cek apakah jumlah melebihi stok yang tersedia
+    //     if(isset($cart[$id_produk])) {
+    //         // Periksa apakah jumlah yang akan ditambahkan melebihi stok yang tersedia
+    //         if($cart[$id_produk]['quantity'] + 1 > $product->stok) {
+    //             Alert::error('error','Stok produk tidak mencukupi!');
+    //             return redirect()->back();
+    //         }
+    
+    //         $cart[$id_produk]['quantity']++;
+    //         session()->put('cart', $cart);
+    
+    //         Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+    //         return redirect()->back()->with('success', 'Kuantitas produk berhasil diperbarui!');
+    //     }
+    
+    //     // Jika produk belum ada di keranjang, tambahkan ke keranjang
+    //     $cart[$id_produk] = [
+    //         'nama_produk' => $product->nama_produk,
+    //         'harga' => $product->diskon,
+    //         'quantity' => 1,
+    //         'gambar_produk' => $product->gambar_produk
+    //     ];
+    
+    //     session()->put('cart', $cart);
+    //     Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+    
+    //     return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+    // }
     public function addToCart(Request $request, $id_produk) {
         $product = Produk::find($id_produk);
     
@@ -144,52 +197,44 @@ class PenjualanController extends Controller
             abort(404); // Handle jika produk tidak ditemukan
         }
     
+        // Jumlah pembelian yang diminta
+        $jumlahBeli = $request->jumlahBeli;
+    
+        // Jika jumlah pembelian melebihi stok yang tersedia, kembalikan pesan kesalahan
+        if($jumlahBeli > $product->stok) {
+            Alert::info('bayar!','ulah poho mayar');
+            return redirect()->back()->with('error', 'Produk berhasil ditambahkan ke keranjang!');
+
+            // return redirect()->back();
+        }
+    
         $cart = session()->get('cart');
     
         // Jika keranjang kosong, inisialisasi dengan array kosong
         if(!$cart) {
-            $cart = [
-                $id_produk => [
-                    'nama_produk' => $product->nama_produk,
-                    'harga' => $product->diskon,
-                    'quantity' => 1,
-                    'gambar_produk' => $product->gambar_produk
-                ]
-            ];
-    
-            session()->put('cart', $cart);
-            Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
-            return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+            $cart = [];
         }
     
-        // Jika produk sudah ada di keranjang, cek apakah jumlah melebihi stok yang tersedia
+        // Periksa apakah produk sudah ada di keranjang
         if(isset($cart[$id_produk])) {
-            // Periksa apakah jumlah yang akan ditambahkan melebihi stok yang tersedia
-            if($cart[$id_produk]['quantity'] + 1 > $product->stok) {
-                Alert::error('error','Stok produk tidak mencukupi!');
-                return redirect()->back();
-            }
-    
-            $cart[$id_produk]['quantity']++;
-            session()->put('cart', $cart);
-    
-            Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
-            return redirect()->back()->with('success', 'Kuantitas produk berhasil diperbarui!');
+            // Update jumlah pembelian dengan yang diinputkan dalam modal
+            $cart[$id_produk]['quantity'] += $jumlahBeli;
+        } else {
+            // Tambahkan produk ke keranjang dengan jumlah yang diinputkan dalam modal
+            $cart[$id_produk] = [
+                'nama_produk' => $product->nama_produk,
+                'harga' => $product->diskon,
+                'quantity' => $jumlahBeli,
+                'gambar_produk' => $product->gambar_produk
+            ];
         }
-    
-        // Jika produk belum ada di keranjang, tambahkan ke keranjang
-        $cart[$id_produk] = [
-            'nama_produk' => $product->nama_produk,
-            'harga' => $product->diskon,
-            'quantity' => 1,
-            'gambar_produk' => $product->gambar_produk
-        ];
     
         session()->put('cart', $cart);
-        Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
     
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
+    
+    
     
     public function checkout(Request $request)
     {
@@ -231,6 +276,7 @@ class PenjualanController extends Controller
         $details=Detail_Transaksi::where('transaksi_id',$transaksi->id)->get();
         $pel=Pelanggan::where('id',$request->id_pelanggan)->first();
         
+        $tothar=$request->totalharga;
         $inputdiskon=$request->diskon;
         $totalsetdiskon=$request->total_setelah_diskon;
         // Setelah checkout selesai, hapus keranjang dari session
@@ -238,23 +284,32 @@ class PenjualanController extends Controller
         // Redirect ke halaman sukses atau konfirmasi pembayaran
         Alert::info('bayar!','ulah poho mayar');
 
-        return view('invoice',compact('transaksi', 'details', 'totalharga','pel','totalsetdiskon','inputdiskon'));
-    }
+        return view('invoice',compact('transaksi', 'details', 'totalharga','pel','totalsetdiskon','inputdiskon','tothar'));
+    }   
 
     public function cetak_pdf(Request $request)
     {
-        $details=Detail_Transaksi::where('transaksi_id',$transaksi->id)->get();
-        $pel=Pelanggan::where('id',$request->id_pelanggan)->first();
+        $transaksiId = $request->input('transaksi_id');
+        $pelangganId = $request->input('id_pelanggan');
+        $tothar=$request->input('totalharga');
+        // Ambil data transaksi, pelanggan, dan detail transaksi
+        $transaksi = Transaksi::findOrFail($transaksiId);
+        $pelanggan = Pelanggan::findOrFail($pelangganId);
+        $details = Detail_Transaksi::where('transaksi_id', $transaksiId)->get();
     
-        // Pastikan $pel memiliki data sebelum Anda melanjutkan
-        if (!$pel->isEmpty()) {
-            $pdf = PDF::loadView('invoice', ['invoice' => $details, 'pelanggan' => $pel, 'transaksi' => $transaksi]);
-        
-            return $pdf->download('laporan-pegawai-pdf');
+        // Pastikan $pelanggan memiliki data sebelum melanjutkan
+        if ($pelanggan) {
+            // Load view invoice_pdf.blade.php dan kirimkan data yang diperlukan
+            $pdf = PDF::loadView('invoice_pdf', compact('transaksi', 'details', 'pelanggan','tothar'));
+    
+            // Download file PDF
+            return $pdf->download('invoice.pdf');
         } else {
-            // Lakukan penanganan kesalahan jika $pel kosong
-            return redirect()->back()->with('error', 'Data pelanggan kosong!');
+            // Lakukan penanganan kesalahan jika $pelanggan kosong
+            return redirect()->back()->with('error', 'Data pelanggan tidak ditemukan.');
         }
+
+        return redirect('penjualan');
     }
     
     
