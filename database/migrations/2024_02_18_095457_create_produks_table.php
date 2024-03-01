@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_produk');
             $table->tinyText('gambar_produk');
             $table->integer('harga');
+            $table->integer('harga_beli');
             $table->integer('stok');
             $table->date('tanggal_kadaluarsa');
             $table->integer('id_kategori');

@@ -403,18 +403,22 @@ class PenjualanController extends Controller
         $tothar=$request->totalharga;
         $inputdiskon=$request->diskon;
         $totalsetdiskon=$request->total_setelah_diskon;
+        $jmluang=$request->jumlah_uang;
+        $kembalian=$request->kembalian;
         // Setelah checkout selesai, hapus keranjang dari session
         session()->forget('cart');   
         // Redirect ke halaman sukses atau konfirmasi pembayaran
         Alert::info('bayar!','ulah poho mayar');
 
-        return view('invoice',compact('transaksi', 'details', 'totalharga','pel','totalsetdiskon','inputdiskon','tothar'));
+        return view('invoice',compact('transaksi', 'details', 'totalharga','pel','totalsetdiskon','inputdiskon','tothar','jmluang','kembalian'));
     }   
 
     public function cetak_pdf(Request $request)
     {
         $transaksiId = $request->input('transaksi_id');
         $pelangganId = $request->input('id_pelanggan');
+        $jmluang = $request->input('jumlah_uang');
+        $kembalian = $request->input('kembalian');
         $tothar=$request->input('totalharga');
         // Ambil data transaksi, pelanggan, dan detail transaksi
         $transaksi = Transaksi::findOrFail($transaksiId);
@@ -424,7 +428,7 @@ class PenjualanController extends Controller
         // Pastikan $pelanggan memiliki data sebelum melanjutkan
         if ($pelanggan) {
             // Load view invoice_pdf.blade.php dan kirimkan data yang diperlukan
-            $pdf = PDF::loadView('invoice_pdf', compact('transaksi', 'details', 'pelanggan','tothar'));
+            $pdf = PDF::loadView('invoice_pdf', compact('transaksi', 'details', 'pelanggan','tothar','jmluang','kembalian'));
     
             // Download file PDF
             return $pdf->download('invoice.pdf');

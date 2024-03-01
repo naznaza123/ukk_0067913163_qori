@@ -1,17 +1,38 @@
 @extends('layouts.master')
+
 @section('content')
-@include('sweetalert::alert')
-    {{-- <div class="container mt-5 p-5">
-        <section>
-            <div class="row">
-                <div class="card card-background move-on-hover">
-                    <div class="full-background" style="background-image: url('https://images.unsplash.com/photo-1541451378359-acdede43fdf4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=934&amp;q=80')"></div>
-                    <div class="card-body pt-12">
-                      <h4 class="text-white">Search and Discovery</h4>
-                      <p>Website visitors today demand a frictionless user expericence — especially when using search. Because of the hight standards.</p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card bg-gradient-primary shadow">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="text-white text-uppercase mb-1">Total Penjualan</div>
+                                <div class="h5 font-weight-bold text-white mb-0">Rp. {{ number_format($totalPenjualan, 2) }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-shopping-cart fa-2x text-white-300"></i>
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                </div>
             </div>
-        </section>
-    </div> --}}
+            <div class="col-lg-6 mb-4">
+                <div class="card bg-gradient-success shadow">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="text-white text-uppercase mb-1">Total Keuntungan</div>
+                                <div class="h5 font-weight-bold text-white mb-0">Rp. {{ number_format($totalKeuntungan, 2) }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-chart-line fa-2x text-white-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

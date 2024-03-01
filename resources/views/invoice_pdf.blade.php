@@ -93,6 +93,10 @@
             <p>Silakan lakukan pembayaran sesuai dengan total tagihan dalam waktu yang ditentukan.</p>
             <!-- Tambahkan catatan tambahan atau instruksi pembayaran lainnya sesuai kebutuhan -->
         </div>
+        <div class="informasi-pembayaran">
+            <h6>Uang bayar : {{ $jmluang }}</h6>
+            <p>Kembalian: {{ $kembalian }}</p>
+        </div>
     </div>
 </body>
 </html>

@@ -12,6 +12,7 @@
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Harga</th>
+                                <th>Harga Beli</th>
                                 <th>Stok</th>
                                 <th>Gambar</th>
                                 <th>Diskon</th>
@@ -29,6 +30,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->nama_produk }}</td>
                                 <td class=" font-weight-bolder ">{{ formatRupiah($item->harga,true) }}</td>
+                                <td class=" font-weight-bolder ">{{ formatRupiah($item->harga_beli,true) }}</td>
                                 <td>{{ $item->stok }}
                                     @if($item->stok == 0)
                                         <span class="text-danger">Stok Habis</span>
@@ -82,6 +84,10 @@
                     <div class="input-group input-group-outline my-3">
                         <label class="form-label">Harga</label>
                         <input type="number" name="harga" class="form-control">
+                    </div>
+                    <div class="input-group input-group-outline my-3">
+                        <label class="form-label">Harga Beli</label>
+                        <input type="number" name="harga_beli" class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
                         <label class="form-label">Stok</label>

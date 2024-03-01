@@ -148,7 +148,7 @@
                             @if ($item->stok > 0)
                             <div class="d-grid">
                                 <button class="btn bg-gradient-success btn-sm btnAddToCart" data-toggle="modal" data-target="#modalBeli_{{$item->id}}">
-                                   Beli Produk Lebih Dari 1
+                                   Jumlah Lebih Banyak
                                 </button>
                             </div>
                             <div class="d-grid">

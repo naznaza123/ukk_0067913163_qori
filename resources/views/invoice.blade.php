@@ -178,6 +178,8 @@
             <input type="hidden" name="transaksi_id" value="{{ $transaksi->id }}">
             <input type="hidden" name="id_pelanggan" value="{{ $pel->id }}">
             <input type="hidden" name="totalharga" value="{{ $totalharga }}">
+            <input type="hidden" name="jumlah_uang" value="{{ $jmluang }}">
+            <input type="hidden" name="kembalian" value="{{ $kembalian }}">
             <button type="submit"  class="btn btn-primary">Cetak Invoice PDF</button>
         </form>
         <div class="text-center">
