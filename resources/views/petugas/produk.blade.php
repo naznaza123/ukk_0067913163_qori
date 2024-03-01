@@ -25,7 +25,11 @@
                     <tr>
                         <td class="align-middle text-center text-sm">{{ $item->nama_diskon }}</td>
                         <td class="align-middle  text-center text-sm">{{ $item->jenis_diskon }}</td>
-                        <td class="align-middle font-weight-bold text-center text-sm">{{ $item->nilai_diskon }}</td>
+                        <td class="align-middle font-weight-bold text-center text-sm">
+                        <span class="badge badge-pill bg-gradient-primary">
+                                {{ $item->nilai_diskon }}
+                        </span>
+                        </td>
                         <td class="align-middle text-center text-sm">{{ $item->deskripsi }}</td>
                         <td class="align-middle font-weight-bold text-center text-sm">{{  $item->berlaku_mulai.' -Sampai- '.$item->berlaku_selesai  }}</td>
                         <td>&nbsp;</td>
@@ -42,7 +46,7 @@
                     <option value="persen">Diskon Persen</option>
                     <option value="rupiah">Diskon Rupiah</option>
                 </select>
-                  
+
                 <div id="formDiskonPersen">
                     <!-- Tampilkan form untuk diskon persen -->
                     <form action="/diskon/create" method="post">

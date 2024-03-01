@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 @include('sweetalert::alert')
-    <div class="container mt-5 p-5">
+    {{-- <div class="container mt-5 p-5">
         <section>
             <div class="row">
                 <div class="card card-background move-on-hover">
@@ -13,5 +13,5 @@
                   </div>
             </div>
         </section>
-    </div>
+    </div> --}}
 @endsection

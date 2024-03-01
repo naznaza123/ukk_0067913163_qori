@@ -76,53 +76,58 @@
     </div>
         <main class="main-content  mt-0">
           <section>
-            <div class="page-header min-vh-75">
-              <div class="container">
-                  <div class="row">
-                      <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-                    <div class="card card-plain mt-5">
-                        <div class="card-header pb-0 text-center bg-transparent">
-                            <img src="{{ asset('postifylogo/favicon1.png') }}" class="mb-2" width="100px" alt="" srcset="">
-                        <h3 class="font-weight-bolder text-primary text-gradient">POStify</h3>
-                        <p class="mb-0">Aplikasi Kasir </p>
-                      </div>
-                      <div class="card-body">
-                          <form method="post" action="/login" role="form">
-                            @csrf
-                              <label>Email</label>
-                          <div class="mb-3">
-                              <input value="{{ old('akun') }}" type="text" name="akun" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
-                            </div>
-                            <label>Password</label>
-                            <div class="mb-3">
-                                <input id="password" value="{{ old('pass') }}" name="pass" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
-                                <input type="checkbox" id="showPassword">
-                                <label for="showPassword">Show Password</label>
+            <div class="card">
+                <div class="card-body">
 
-                                <script>
-                                    const passwordInput = document.getElementById('password');
-                                    const showPasswordCheckbox = document.getElementById('showPassword');
-                            
-                                    showPasswordCheckbox.addEventListener('change', function() {
-                                        const passwordFieldType = this.checked ? 'text' : 'password';
-                                        passwordInput.setAttribute('type', passwordFieldType);
-                                    });
-                                </script>
+                    <div class="page-header min-vh-75">
+                      <div class="container">
+                          <div class="row">
+                              <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                            <div class="card card-plain mt-5">
+                                <div class="card-header pb-0 text-center bg-transparent">
+                                    <img src="{{ asset('postifylogo/favicon1.png') }}" style="border-radius: 10px;" class="mb-2" width="100px" alt="" srcset="">
+                                <h3 class="font-weight-bolder text-primary text-gradient">POStify</h3>
+                                <p class="mb-0">Aplikasi Kasir </p>
+                              </div>
+                              <div class="card-body">
+                                  <form method="post" action="/login" role="form">
+                                    @csrf
+                                      <label>Email</label>
+                                  <div class="mb-3">
+                                      <input value="{{ old('akun') }}" type="text" name="akun" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                                    </div>
+                                    <label>Password</label>
+                                    <div class="mb-3">
+                                        <input id="password" value="{{ old('pass') }}" name="pass" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                                        <input type="checkbox" id="showPassword">
+                                        <label for="showPassword">Show Password</label>
+        
+                                        <script>
+                                            const passwordInput = document.getElementById('password');
+                                            const showPasswordCheckbox = document.getElementById('showPassword');
+                                    
+                                            showPasswordCheckbox.addEventListener('change', function() {
+                                                const passwordFieldType = this.checked ? 'text' : 'password';
+                                                passwordInput.setAttribute('type', passwordFieldType);
+                                            });
+                                        </script>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
+                                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                                    </div>
+                                  <div class="text-center">
+                                      <button type="submit" class="btn bg-gradient-primary w-100 mt-4 mb-0">Log In</button>
+                                  </div>
+                                </form>
                             </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
-                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                <p class="mb-4 text-sm mx-auto">
+                                    Butuh Bantuan ?
+                                    <a  href="www.nazaprocet.my.id" class="text-primary text-gradient font-weight-bold">Creator</a>
+                                </p>
                             </div>
-                          <div class="text-center">
-                              <button type="submit" class="btn bg-gradient-primary w-100 mt-4 mb-0">Log In</button>
-                          </div>
-                        </form>
-                    </div>
-                    <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                        <p class="mb-4 text-sm mx-auto">
-                            Butuh Bantuan ?
-                            <a href="javascript:;" class="text-primary text-gradient font-weight-bold">POStify Team</a>
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>

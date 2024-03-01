@@ -12,4 +12,8 @@ class Pembelian extends Model
         'tanggal_beli',
         'metode_pembayaran'
     ];
+    public function detailBeli()
+    {
+        return $this->hasMany(Detail_beli::class);
+    }
 }

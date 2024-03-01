@@ -84,6 +84,49 @@
             margin-right: 10px; /* Added spacing between image and text */
         }
     </style>
+    <script>
+        // JavaScript untuk mengirimkan permintaan AJAX dan mengunduh PDF
+        function cetakInvoicePDF(transaksiId, pelangganId, totalharga) {
+            $.ajax({
+                url: '/penjualan/cetak_pdf',
+                method: 'POST',
+                data: {
+                    transaksi_id: transaksiId,
+                    id_pelanggan: pelangganId,
+                    totalharga: totalharga,
+                    _token: '{{ csrf_token() }}'
+                },
+                xhrFields: {
+                    responseType: 'blob' // Menggunakan blob sebagai tipe respons
+                },
+                success: function(data) {
+                    // Membuat objek blob dari respons
+                    var blob = new Blob([data], { type: 'application/pdf' });
+
+                    // Membuat URL objek blob
+                    var url = window.URL.createObjectURL(blob);
+
+                    // Membuat elemen anchor untuk unduhan otomatis
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'invoice.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+
+                    // Melepaskan objek URL setelah unduhan selesai
+                    window.URL.revokeObjectURL(url);
+
+                    // Setelah unduhan selesai dan invoice telah dicetak, redirect ke halaman penjualan
+                    window.location.href = '/penjualan';
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('Terjadi kesalahan saat mengunduh PDF.');
+                }
+            });
+        }
+    </script>
+
 </head>
 <body>
     <div class="container">
@@ -135,8 +178,13 @@
             <input type="hidden" name="transaksi_id" value="{{ $transaksi->id }}">
             <input type="hidden" name="id_pelanggan" value="{{ $pel->id }}">
             <input type="hidden" name="totalharga" value="{{ $totalharga }}">
-            <button type="submit" class="btn btn-primary">Cetak Invoice PDF</button>
+            <button type="submit"  class="btn btn-primary">Cetak Invoice PDF</button>
         </form>
+        <div class="text-center">
+            <a class="btn bg-gradient-primary" href="/penjualan">
+                Kembali
+            </a>
+        </div>
         {{-- <a href="#" class="btn-print" onclick="window.print()">Print Invoice</a> --}}
     </div>
 </body>

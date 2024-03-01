@@ -1,35 +1,80 @@
     @extends('layouts.master')
     @section('content')
+    
         <script>
         </script>
         <script>
-            function addToCartWithQuantity(id_produk) {
-                var jumlahBeli = document.getElementById('jumlahBeli_' + id_produk).value;
-                
-                $.ajax({
-                    url: "{{ url('addToCart') }}/" + id_produk,
-                    method: 'POST',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        jumlahBeli: jumlahBeli
-                    },
-                    success: function(response) {
-                        // Handle jika penambahan ke keranjang berhasil
-                        // Misalnya, tampilkan pesan sukses atau lakukan tindakan lain
-                        $('#modalBeli_' + id_produk).modal('hide');
-                        alert('Produk berhasil ditambahkan ke keranjang!');
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle jika terjadi kesalahan saat menambahkan ke keranjang
-                        // Misalnya, tampilkan pesan error atau lakukan tindakan lain
-                        if(xhr.status === 422) {
-                            alert('Jumlah melebihi stok produk!');
-                        } else {
-                            alert('Terjadi kesalahan: ' + error);
+                function addToCartWithoutQuantity(id_produk) {
+                    $.ajax({
+                        url: "{{ url('addToCart') }}/" + id_produk,
+                        method: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sukses',
+                                text: 'Produk berhasil ditambahkan ke keranjang!'
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            if(xhr.status === 422) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Jumlah melebihi stok produk!'
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan: ' + error
+                                });
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+
+                function addToCartWithQuantity(id_produk) {
+                    var jumlahBeli = document.getElementById('jumlahBeli_' + id_produk).value;
+                    
+                    $.ajax({
+                        url: "{{ url('addToCart') }}/" + id_produk,
+                        method: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            jumlahBeli: jumlahBeli
+                        },
+                        success: function(response) {
+                            // Handle jika penambahan ke keranjang berhasil
+                            // Misalnya, tampilkan pesan sukses atau lakukan tindakan lain
+                            $('#modalBeli_' + id_produk).modal('hide');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sukses',
+                                text: 'Produk berhasil ditambahkan ke keranjang!'
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle jika terjadi kesalahan saat menambahkan ke keranjang
+                            // Misalnya, tampilkan pesan error atau lakukan tindakan lain
+                            if(xhr.status === 422) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Jumlah melebihi stok produk!'
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan: ' + error
+                                });
+                            }
+                        }
+                    });
+                }
 
             $( function() {
                 $( "#searchInput" ).autocomplete({
@@ -51,6 +96,18 @@
             } );
         </script>
 
+        <style>
+            .diskon-info {
+                position: absolute;
+                top: 10px; /* Sesuaikan posisi vertikal teks sesuai kebutuhan */
+                left: 10px; /* Sesuaikan posisi horizontal teks sesuai kebutuhan */
+                background-color: rgba(255, 255, 255, 0.8); /* Atur warna latar belakang dengan transparansi */
+                padding: 5px 10px; /* Sesuaikan padding sesuai kebutuhan */
+                border-radius: 5px; /* Atur radius sudut untuk menampilkan kotak */
+                font-weight: bold; /* Atur teks menjadi tebal */
+            }
+        </style>
+
         <div class="container">
             @include('sweetalert::alert')
             <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -58,23 +115,59 @@
                 <div class="col">
                     <div class="card h-100">
                         <img src="/image/{{ $item->gambar_produk }}" class="card-img-top" alt="{{ $item->nama_produk }}">
+                        @if(isset($diskon[$item->id]))
+                            <div class="diskon-info">
+                                <span class="badge badge-pill bg-gradient-warning">
+                                    @if ($diskon[$item->id]->jenis_diskon=='%')
+                                        {{ $diskon[$item->id]->nilai_diskon.'%' }}     
+                                    @else
+                                        -{{ formatRupiah($diskon[$item->id]->nilai_diskon,true) }}      
+                                    @endif
+                                </span>
+                            </div>
+                        @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->nama_produk }}</h5>
                             <p class="card-text">
-                                <strong class="text-danger">{{ formatRupiah($item->diskon, true) }}</strong>
+                                <strong class="text-primary text-gradient">{{ formatRupiah($item->diskon, true) }}</strong>
                                 <del class="text-muted">{{ formatRupiah($item->harga, true) }}</del>
                             </p>
                             <p class="card-text">
-                                <small class="text-muted">Stok: {{ $item->stok }}</small>
+                                @if ($item->stok > 0 )
+                                <span class="badge badge-pill bg-gradient-primary">
+                                    <small class="">Stok: {{ $item->stok }}</small>
+                                </span>            
+                                @else
+                                <span class="badge badge-pill bg-gradient-danger">
+                                    <small class="">Stok: {{ $item->stok }}</small>
+                                </span>              
+                                @endif
                             </p>
                         </div>
                         <div class="card-footer">
                             @if ($item->stok > 0)
-                            <button class="btn btn-primary btn-sm btnAddToCart" data-toggle="modal" data-target="#modalBeli_{{$item->id}}">
-                                <i class="ni ni-cart"></i> Add to Cart
-                            </button>
+                            <div class="d-grid">
+                                <button class="btn bg-gradient-success btn-sm btnAddToCart" data-toggle="modal" data-target="#modalBeli_{{$item->id}}">
+                                   Beli Produk Lebih Dari 1
+                                </button>
+                            </div>
+                            <div class="d-grid">
+                                <a class="btn bg-gradient-primary"  onclick="addToCartWithoutQuantity({{ $item->id }})" href="/addToCart/{{ $item->id }}">Pilih Produk</a>
+
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        
+                                    </div>
+                                    <div class="col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
                             {{-- modal --}}
                             <div class="modal fade" id="modalBeli_{{$item->id}}" tabindex="-1" aria-labelledby="modalBeliLabel_{{$item->id}}" aria-hidden="true">
+                                 @include('sweetalert::alert')
+                                
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -99,7 +192,7 @@
                                 </div>
                             </div>
                             @else
-                            <button class="btn btn-secondary btn-sm" disabled>
+                            <button class="btn bg-gradient-secondary btn-sm" disabled>
                                 Stok Habis
                             </button>
                             @endif

@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'hakadmin' => \App\Http\Middleware\HakAdmin::class,
         'hakpetugas' => \App\Http\Middleware\HakPetugas::class,
+        'ceklogin' => \App\Http\Middleware\CekLogin::class,
         'hakadminpetugas' => \App\Http\Middleware\hakadminpetugas::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,

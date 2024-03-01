@@ -106,6 +106,13 @@ class PenjualanController extends Controller
         $diskon=Diskon::all();
         $produk=Produk::all();
         $pelanggan=Pelanggan::all();
+
+        $dis = []; 
+        foreach ($produk as $item) {
+            $iddiskon = $item->id_diskon;
+            $diskonProduk = Diskon::find($iddiskon);
+            $dis[] = $diskonProduk;
+        }
         // $detp=Detail_Transaksi::all();
         
         // $idp=$request->id_produk;
@@ -113,6 +120,7 @@ class PenjualanController extends Controller
         $data=[
             'produk'=>$produk,
             // 'dp'=>$dp,
+            'diskoninfo'=>$dis,
             'diskon'=>$diskon,
             'pel'=>$pelanggan,
             // 'dt'=>$detp
@@ -192,18 +200,21 @@ class PenjualanController extends Controller
     // }
     public function addToCart(Request $request, $id_produk) {
         $product = Produk::find($id_produk);
+        $totalQuantity = 0;
     
         if(!$product) {
             abort(404); // Handle jika produk tidak ditemukan
         }
-    
+        $request->validate([
+            'jumlahBeli' => ['required', 'numeric', 'min:1', 'max:'.$product->stok],
+        ]);
         // Jumlah pembelian yang diminta
         $jumlahBeli = $request->jumlahBeli;
     
         // Jika jumlah pembelian melebihi stok yang tersedia, kembalikan pesan kesalahan
         if($jumlahBeli > $product->stok) {
-            Alert::info('bayar!','ulah poho mayar');
-            return redirect()->back()->with('error', 'Produk berhasil ditambahkan ke keranjang!');
+            Alert::error('bayar!','ulah poho mayar');
+            return redirect()->back();
 
             // return redirect()->back();
         }
@@ -214,10 +225,15 @@ class PenjualanController extends Controller
         if(!$cart) {
             $cart = [];
         }
-    
+        
+
         // Periksa apakah produk sudah ada di keranjang
         if(isset($cart[$id_produk])) {
             // Update jumlah pembelian dengan yang diinputkan dalam modal
+            if($product->stok <= 0 || $product->stok < $cart[$id_produk]['quantity'] + 1) {
+                Alert::error('Error', 'Stok produk tidak mencukupi!');
+                return redirect()->back();
+            }
             $cart[$id_produk]['quantity'] += $jumlahBeli;
         } else {
             // Tambahkan produk ke keranjang dengan jumlah yang diinputkan dalam modal
@@ -228,11 +244,119 @@ class PenjualanController extends Controller
                 'gambar_produk' => $product->gambar_produk
             ];
         }
+
     
         session()->put('cart', $cart);
     
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
+    // public function addToCart1(Request $request, $id_produk) {
+    //     $product = Produk::find($id_produk);
+    
+    //     if(!$product) {
+    //         abort(404); // Handle jika produk tidak ditemukan
+    //     }
+    
+    //     $cart = session()->get('cart');
+    
+    //     // Jika keranjang kosong, inisialisasi dengan array kosong
+    //     if(!$cart) {
+    //         $cart = [
+    //             $id_produk => [
+    //                 'nama_produk' => $product->nama_produk,
+    //                 'harga' => $product->harga,
+    //                 'quantity' => 1,
+    //                 'gambar_produk' => $product->gambar_produk
+    //             ]
+    //         ];
+    
+    //         session()->put('cart', $cart);
+    //         Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+    //         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+    //     }
+    
+    //     // Jika produk sudah ada di keranjang, tingkatkan kuantitasnya
+    //     if(isset($cart[$id_produk])) {
+    //         $cart[$id_produk]['quantity']++;
+    //         session()->put('cart', $cart);
+            
+    //         //  return view ('cart');
+    //         Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+
+    //         return redirect()->back()->with('success', 'Kuantitas produk berhasil diperbarui!');
+    //     }
+    
+    //     // Jika produk belum ada di keranjang, tambahkan ke keranjang
+    //     $cart[$id_produk] = [
+    //         'nama_produk' => $product->nama_produk,
+    //         'harga' => $product->diskon,
+    //         'quantity' => 1,
+    //         'gambar_produk' => $product->gambar_produk
+    //     ];
+
+    
+    //     session()->put('cart', $cart);
+    //     Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+
+    //     // return view ('cart');
+    //     return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+    // }
+    public function addToCart1(Request $request, $id_produk) {
+        $product = Produk::find($id_produk);
+    
+        if(!$product) {
+            abort(404); // Handle jika produk tidak ditemukan
+        }
+    
+        $cart = session()->get('cart');
+    
+        // Jika keranjang kosong, inisialisasi dengan array kosong
+        if(!$cart) {
+            $cart = [
+                $id_produk => [
+                    'nama_produk' => $product->nama_produk,
+                    'harga' => $product->harga,
+                    'quantity' => 1,
+                    'gambar_produk' => $product->gambar_produk
+                ]
+            ];
+    
+            session()->put('cart', $cart);
+            Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+            return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        }
+    
+        // Jika produk sudah ada di keranjang, dan quantity tidak melebihi stok, tingkatkan kuantitasnya
+        if(isset($cart[$id_produk])) {
+            // Periksa apakah jumlah yang akan ditambahkan melebihi stok yang tersedia
+            if($cart[$id_produk]['quantity'] + 1 > $product->stok) {
+                Alert::error('Error', 'Stok produk tidak mencukupi!');
+                return redirect()->back();
+            }
+    
+            // Tingkatkan kuantitas produk hanya jika tidak melebihi stok
+            $cart[$id_produk]['quantity']++;
+            session()->put('cart', $cart);
+    
+            Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+            return redirect()->back()->with('success', 'Kuantitas produk berhasil diperbarui!');
+        }
+    
+        // Jika produk belum ada di keranjang, tambahkan ke keranjang
+        $cart[$id_produk] = [
+            'nama_produk' => $product->nama_produk,
+            'harga' => $product->diskon,
+            'quantity' => 1,
+            'gambar_produk' => $product->gambar_produk
+        ];
+    
+        session()->put('cart', $cart);
+        Alert::success('horeng!','produk sudah ditambahkan ke keranjang');
+    
+        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+    }
+    
+
     
     
     

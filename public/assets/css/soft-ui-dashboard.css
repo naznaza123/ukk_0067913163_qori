@@ -9,7 +9,7 @@
     --bs-indigo: #596cff;
     --bs-purple: #6f42c1;
     /* --bs-pink: #d63384; */
-    --bs-pink: #0CCB38;
+    --bs-pink: #0ccb38;
     --bs-red: #f56565;
     --bs-orange: #fd7e14;
     --bs-yellow: #fbd38d;
@@ -4918,7 +4918,7 @@ fieldset:disabled .btn {
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-    color: #495057;
+    color: #cb0c9f;
     background-color: #fff;
     border-color: #dee2e6 #dee2e6 #fff;
 }
@@ -5358,6 +5358,17 @@ fieldset:disabled .btn {
 }
 
 .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0, 0, 0, 0.125);
+    border-radius: 1rem;
+}
+.avatar {
     position: relative;
     display: flex;
     flex-direction: column;

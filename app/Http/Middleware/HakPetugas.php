@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-
+use Alert;
 class HakPetugas
 {
     /**
@@ -19,6 +19,10 @@ class HakPetugas
         if(Auth::check()){
             if(Auth::user()->level=='petugas'){
                 return $next($request);    
+            }else{
+                Alert::error('Maaf','Kamu Bukan Admin');
+                return back();
+                
             }
         }
         return redirect('');

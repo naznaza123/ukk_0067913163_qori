@@ -10,11 +10,15 @@ class Diskon extends Model
     use HasFactory;
     protected $fillable=[
         'nama_diskon',
-        'jenis_diskon',
+    'jenis_diskon',
         'nilai_diskon',
         'deskripsi',
         'berlaku_mulai',
         'berlaku_selesai'
 
     ];
+    public function detailDiskon()
+    {
+        return $this->hasMany(Produk::class);
+    }
 }

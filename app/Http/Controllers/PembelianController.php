@@ -7,6 +7,8 @@ use Alert;
 use App\Models\Detail_beli;
 use App\Models\DetailJual;
 use App\Models\Pembelian;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
 
@@ -18,6 +20,51 @@ class PembelianController extends Controller
         
         $data['produk']=Produk::all();
         return view ('pembelian.index',$data);
+    }
+    public function laporanpembelian()
+    {
+        return view ('laporan.pembelian');
+    }
+    public function search(Request $request)
+    {
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        // Convert tanggal awal dan akhir ke format yang sesuai
+        $start_date = Carbon::parse($start_date)->format('Y-m-d');
+        $end_date = Carbon::parse($end_date)->format('Y-m-d');
+        // Ambil data penjualan berdasarkan rentang tanggal
+        $transaksis = Pembelian::with('detailBeli')
+            ->whereBetween('tanggal_beli', [$start_date, $end_date])
+            ->get();
+
+        return view('laporan.pembelian', compact('transaksis', 'start_date', 'end_date'));
+    }
+    public function cetakPDF(Request $request)
+    {
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        // Convert tanggal awal dan akhir ke format yang sesuai
+        $start_date = Carbon::parse($start_date)->format('Y-m-d');
+        $end_date = Carbon::parse($end_date)->format('Y-m-d');
+
+        // Ambil data penjualan berdasarkan rentang tanggal
+        $transaksis = Pembelian::with('detailBeli')
+            ->whereBetween('tanggal_beli', [$start_date, $end_date])
+            ->get();
+
+        // Lakukan pengecekan apakah ada data transaksi
+        if ($transaksis->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada data penjualan pada rentang tanggal yang diminta.');
+        }
+
+        // Load view laporan penjualan ke dalam PDF
+        $pdf = PDF::loadView('laporan.pembelian_pdf', compact('transaksis', 'start_date', 'end_date'));
+
+        // Return file PDF untuk di-download oleh pengguna
+        return $pdf->download('laporan_pembelian.pdf');
+    
     }
     public function addstok(Request $request, $id_produk)
     {
