@@ -28,7 +28,7 @@
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        table th, table td {
+        ta  ble th, table td {
             padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;

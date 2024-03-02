@@ -103,30 +103,30 @@ class PenjualanController extends Controller
     }
 
     public function index(Request $request){
-        $diskon=Diskon::all();
-        $produk=Produk::all();
-        $pelanggan=Pelanggan::all();
-
+        $produk = Produk::all();
+        $pelanggan = Pelanggan::all();
+    
         $dis = []; 
         foreach ($produk as $item) {
             $iddiskon = $item->id_diskon;
             $diskonProduk = Diskon::find($iddiskon);
-            $dis[] = $diskonProduk;
+            $dis[$item->id] = $diskonProduk; // Menyimpan diskon dengan kunci ID produk
+
+            $diskonProduk = Diskon::find($item->id_diskon);
+            if ($diskonProduk && !$diskonProduk->isExpired()) {
+                $data['diskoninfo'][$item->id] = $diskonProduk;
+            }
         }
-        // $detp=Detail_Transaksi::all();
-        
-        // $idp=$request->id_produk;
-        // $dp=Produk::find($idp);
-        $data=[
-            'produk'=>$produk,
-            // 'dp'=>$dp,
-            'diskoninfo'=>$dis,
-            'diskon'=>$diskon,
-            'pel'=>$pelanggan,
-            // 'dt'=>$detp
+    
+        $data = [
+            'produk' => $produk,
+            'diskoninfo' => $dis,
+            'pel' => $pelanggan,
         ];
-        return view('.penjualan.index',$data);
+    
+        return view('.penjualan.index', $data);
     }
+    
     public function cart(){
         $data['pel']=Pelanggan::all();
 

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Diskon extends Model
 {
@@ -21,4 +23,10 @@ class Diskon extends Model
     {
         return $this->hasMany(Produk::class);
     }
+
+    public function isExpired()
+    {
+        return Carbon::now()->gt(Carbon::parse($this->berlaku_selesai));
+    }
+
 }

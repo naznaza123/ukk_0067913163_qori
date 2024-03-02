@@ -16,7 +16,7 @@
 <body>
     @include('sweetalert::alert')
     <div class="container">
-        <a class="btn btn-primary icon-move-left bg-gradient-primary" href="/penjualan">
+        <a class="btn btn-primary icon-move-left bg-gradient-warning" href="/penjualan">
             <i class="ni ni-bold-left"></i> Kembali
         </a>
         @if(session('cart'))
@@ -205,7 +205,7 @@
     }
 
     function hitungKembalian() {
-        var totalHarga = {{ $total }};
+        var totalHarga = {{ isset($total) ? $total : 0 }};
         var jumlahUang = document.getElementById('jumlah_uang').value;
         var kembalian = jumlahUang - totalHarga;
 

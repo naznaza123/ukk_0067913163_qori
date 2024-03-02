@@ -12,8 +12,8 @@
             <input type="number" class="form-control" id="jumlah" name="jumlah" placeholder="Jumlah">
         </div>
         <div class="mb-3">
-            <label for="harga_per_produk" class="form-label">Harga per Produk</label>
-            <input type="number" class="form-control" id="harga_per_produk" name="harga_per_produk" placeholder="Harga per produk">
+            <label for="harga_per_produk" class="form-label">Harga Beli</label>
+            <input type="number" class="form-control" id="harga_per_produk" name="harga_per_produk" placeholder="Harga per produk" disabled value="{{ $hargabeli }}">
         </div>
         <div class="mb-3">
             <label for="hargatotal" class="form-label">Harga Total</label>

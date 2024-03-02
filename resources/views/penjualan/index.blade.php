@@ -115,16 +115,19 @@
                 <div class="col">
                     <div class="card h-100">
                         <img src="/image/{{ $item->gambar_produk }}" class="card-img-top" alt="{{ $item->nama_produk }}">
-                        @if(isset($diskon[$item->id]))
+                        @if(isset($diskoninfo[$item->id]))
                             <div class="diskon-info">
-                                <span class="badge badge-pill bg-gradient-warning">
-                                    @if ($diskon[$item->id]->jenis_diskon=='%')
-                                        {{ $diskon[$item->id]->nilai_diskon.'%' }}     
-                                    @else
-                                        -{{ formatRupiah($diskon[$item->id]->nilai_diskon,true) }}      
-                                    @endif
-                                </span>
-                            </div>
+                                @if ($diskoninfo[$item->id]->nilai_diskon != 0)
+                                    <span class="badge badge-pill bg-gradient-warning">
+                                        @if ($diskoninfo[$item->id]->jenis_diskon == '%')
+                                            {{ $diskoninfo[$item->id]->nilai_diskon.'%' }}
+                                        @else
+                                            -{{ formatRupiah($diskoninfo[$item->id]->nilai_diskon,true) }}      
+                                        @endif
+                                    </span>
+                                @endif
+
+                            </div>  
                         @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->nama_produk }}</h5>
@@ -148,11 +151,11 @@
                             @if ($item->stok > 0)
                             <div class="d-grid">
                                 <button class="btn bg-gradient-success btn-sm btnAddToCart" data-toggle="modal" data-target="#modalBeli_{{$item->id}}">
-                                   Jumlah Lebih Banyak
+                                   Custom Jumlah 
                                 </button>
                             </div>
                             <div class="d-grid">
-                                <a class="btn bg-gradient-primary"  onclick="addToCartWithoutQuantity({{ $item->id }})" href="/addToCart/{{ $item->id }}">Pilih Produk</a>
+                                <a class="btn bg-gradient-primary"  onclick="addToCartWithoutQuantity({{ $item->id }})" href="/addToCart/{{ $item->id }}">Tambah Ke Keranjang</a>
 
                             </div>
                             <div class="container">

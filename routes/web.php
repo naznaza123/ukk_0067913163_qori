@@ -52,12 +52,7 @@ Route::middleware('hakadmin')->group(function(){
     Route::get('/laporan/pembelian',[PembelianController::class,'laporanpembelian']);
     Route::get('/laporan/pembelian/search', [PembelianController::class, 'search'])->name('laporan.pembelian.search');
     Route::get('/cetak/pembelian',[PembelianController::class,'cetakPDF'])->name('laporan.pembelian.cetak');
-
-    // Route::get('/pemesanan',[PenjualanController::class,'pemesanan']);
-    // Route::get('/diskon/add/{id}',[PenjualanController::class,'adddiskon']);
-    // Route::get('/penjualan/tambah',[PenjualanController::class,'tambah']);
-    // Route::get('/keranjang',[PenjualanController::class,'keranjang']);
-    
+   
     Route::get('/petugas/create',[PetugasController::class,'create']);
     Route::post('/petugas/store',[PetugasController::class,'store']);
 });
@@ -83,33 +78,23 @@ Route::middleware('ceklogin')->group(function()
     Route::get('/cari',[PenjualanController::class,'cari']);
     Route::get('/invoice/cetak',[PenjualanController::class,'cetak_pdf'])->name('invoice.cetak');
     
-    
     Route::get('/diskon',[DiskonController::class,'index']);
 
+    Route::get('/laporan/penjualan',[PenjualanController::class,'laporanpenjualan']);
+    Route::get('/laporan/search', [PenjualanController::class, 'search'])->name('laporan.search');
+    Route::get('/cetak',[PenjualanController::class,'cetakPDF'])->name('laporan.cetak');
+    
+    Route::get('/pelanggan',[PelangganController::class,'index']);
+    Route::post('/pelanggan/create',[PelangganController::class,'store']);
+    Route::get('/pelanggan/edit/{id}',[PelangganController::class,'edit']);
+    Route::post('/pelanggan/update/{id}',[PelangganController::class,'update']);
+    Route::delete('/pelanggan/delete/{id}',[PelangganController::class,'delete']);
+    
+    Route::get('/laporan/penjualan/petugas',[PetugasController::class,'laporanpenjualan']);
+    Route::get('/laporan/penjualan/search', [PetugasController::class, 'search'])->name('laporan.penjualan.search');
+    Route::get('/cetak/laporan',[PetugasController::class,'cetakPDF'])->name('laporan.penjualan.cetak');
 });
 
-
-// Route::post('/detail_transaksi/create',[DetailTransaksiController::class,'create']);
-
-
-// Route::get('/cart/tambah/{id}',[PenjualanController::class,'cart_tambah']);
-// Route::get('/cart/hapus/{id}',[PenjualanController::class,'cart_hapus']);
-// Route::get('/cart',[PenjualanController::class,'cart']);
-
-
-Route::get('/laporan/penjualan',[PenjualanController::class,'laporanpenjualan']);
-Route::get('/laporan/search', [PenjualanController::class, 'search'])->name('laporan.search');
-Route::get('/cetak',[PenjualanController::class,'cetakPDF'])->name('laporan.cetak');
-
-Route::get('/pelanggan',[PelangganController::class,'index']);
-Route::post('/pelanggan/create',[PelangganController::class,'store']);
-Route::get('/pelanggan/edit/{id}',[PelangganController::class,'edit']);
-Route::post('/pelanggan/update/{id}',[PelangganController::class,'update']);
-Route::delete('/pelanggan/delete/{id}',[PelangganController::class,'delete']);
-
-Route::get('/laporan/penjualan/petugas',[PetugasController::class,'laporanpenjualan']);
-Route::get('/laporan/penjualan/search', [PetugasController::class, 'search'])->name('laporan.penjualan.search');
-Route::get('/cetak/laporan',[PetugasController::class,'cetakPDF'])->name('laporan.penjualan.cetak');
 
 
 

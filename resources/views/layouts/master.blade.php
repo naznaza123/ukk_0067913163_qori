@@ -56,26 +56,28 @@
 
 <body class="g-sidenav-show  bg-gray-100">
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
-      <div class="sidenav-header mb-5">
-        <div class="">
-          <div class="">
-            <div class="text-center mt-3 mb-3">
-              <a href="/logout">
-                <img src="{{ asset('postifylogo/avatar/2.png') }}" class=" avatar " style="border-radius: 20px;" width="50px" alt="" srcset="">
-                <h4 class="mt-3">{{ Auth::user()->name }}</h4>
-                <span class="badge badge-pill bg-gradient-primary">
-                  {{ Auth::user()->level }}
-                </span>
-              </a>
+      <!-- Move profile information into a separate section -->
+      <div class="sidenav-header mb-7 p-2"  style="margin-bottom: 30px;">
+        <div class="card ">
+          <div class="card-body">
+            <div class="text-center mt-1 mb-1">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ asset('postifylogo/avatar/2.png') }}" class="avatar" style="border-radius: 20px;" width="50px" alt="">
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+                <h4 class="mt-0">{{ Auth::user()->name }}</h4>
+                <span class="badge badge-pill bg-gradient-primary">{{ Auth::user()->level }}</span>
             </div>
 
           </div>
         </div>
-          {{-- <i class="fas fa-times m-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i> --}}
-          {{-- <a class="navbar-brand" href="https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html" target="_blank"> --}}
-              {{-- <img src="{{ asset('postifylogo/favicon1.png') }}" width="" class="navbar-brand-img" alt="main_logo"> --}}
-          </a>
       </div>
+
       <hr class="horizontal dark ">
       <div class="collapse navbar-collapse w-auto max-height-vh-100 h-100" id="sidenav-collapse-main">
           <ul class="navbar-nav">
@@ -90,18 +92,18 @@
               </li>
               <li class="nav-item p-2">
                   <a class="nav-link {{ Request::is('penjualan') ? 'active' : '' }} " href="/penjualan">
-                    <svg class="class="text-dark" width="18px" height="18px"" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                      <path fill="#c9059c" d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z"/>
+                    <svg class="text-dark" width="18px" height="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                      <path fill="#ca0b9e" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
                     </svg>
                       <span class="nav-link-text ms-1">Penjualan</span>
                   </a>
               </li>
               <li class="nav-item p-2">
-                <a class="nav-link {{ Request::is('/laporan/penjualan/petugas') ? 'active' : '' }} " href="/laporan/penjualan/petugas">
-                  <svg class="class="text-dark" width="18px" height="18px"" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path fill="#c9059c" d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z"/>
+                <a class="nav-link {{ Request::is('laporan/penjualan/petugas') ? 'active' : '' }} " href="/laporan/penjualan/petugas">
+                  <svg class="text-dark" width="18px" height="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path fill="#cb0fa0" d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 144-208 0c-35.3 0-64 28.7-64 64l0 144-48 0c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM176 352l32 0c30.9 0 56 25.1 56 56s-25.1 56-56 56l-16 0 0 32c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-48 0-80c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24l-16 0 0 48 16 0zm96-80l32 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-32 0c-8.8 0-16-7.2-16-16l0-128c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16l0-64c0-8.8-7.2-16-16-16l-16 0 0 96 16 0zm80-112c0-8.8 7.2-16 16-16l48 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 32 32 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 48c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-64 0-64z"/>
                   </svg>
-                    <span class="nav-link-text ms-1">LAPoran Penjualan</span>
+                  <span class="nav-link-text ms-1">Laporan Penjualan</span>
                 </a>
             </li>
               
@@ -171,7 +173,10 @@
               <li class="nav-item">
                   <a class="nav-link text-white" href="/cart">
                     {{-- <i class="ni ni-cart"></i> --}}
-                    <img src="{{ asset('postifylogo/avatar/cart.png') }}" style="border-radius: 10px;" style="box-shadow: 10px" width="50px" alt="" srcset="">
+                    <svg class="text-dark" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                      <path fill="#ca0e9f" d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
+                    </svg>
+                    {{-- <img src="{{ asset('postifylogo/avatar/cart.png') }}" style="border-radius: 10px;" style="box-shadow: 10px" width="50px" alt="" srcset=""> --}}
                   </a>
     
                  

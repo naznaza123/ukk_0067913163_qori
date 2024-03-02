@@ -102,7 +102,8 @@ class PembelianController extends Controller
     public function pilih($id_produk)
     {
         $data['produkbeli']=Produk::find($id_produk);
-        return view ('pembelian.beli',$data);
+        $hargabeli=$data['produkbeli']->harga_beli;
+        return view ('pembelian.beli',$data,compact('hargabeli'));
     }
 
     public function carts()

@@ -74,8 +74,10 @@ class ProdukController extends Controller
 
         return redirect()->back();
     }
-    public function edit($id){
-        $data['produk']=Produk::find($id);
+    public function edit($id_produk){
+        $data['kateg']=Kategori::all();
+        $data['diskon']=Diskon::all();
+        $data['produk']=Produk::find($id_produk);
         return view ('admin.edit-produk',$data);
     }
     public function update(Request $request){
@@ -86,18 +88,19 @@ class ProdukController extends Controller
             'harga_beli'=>'required',
             'stok'=>'required',
             'tanggal_kadaluarsa'=>'required',
-            'id_kategori'=>'required',
+            'id_kategori'=>'nullable',
             'id_diskon'=>'required',
-
         ]);
+    
         if($request->file('gambar_produk')){
             $file=$request->file('gambar_produk');
             $filename=$file->hashName();
             $file->move(public_path('image'),$filename);
-
             $data['gambar_produk']=$filename;
         }
-        Produk::where('id',$request->id)->update($data);
+    
+        Produk::where('id',$request->id_produk)->update($data);
         return redirect('produk');
     }
+    
 }
